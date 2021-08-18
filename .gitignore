@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/packages
+/.vs/DotNetSessionApi64.Example/v16
+/DotNetSessionApi64.Example/obj
+/DotNetSessionApi64.Example/bin
