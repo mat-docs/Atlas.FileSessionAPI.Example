@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace DotNetSessionApi64.Example
+namespace MAT.FileSessionApi.Example
 {
     internal static class Program
     {
@@ -14,7 +14,7 @@ namespace DotNetSessionApi64.Example
             const string menu = @"
             #####################################################################################################
             
-            Example code showing how to read-write ATLAS session files
+            Example code showing how to read-write ATLAS session files (Verify settings in Main() before executing)
 
             Option 1 - Create a new session file with bespoke parameters
             Option 2 - Read all parameters from an existing session file (with optional associated sessions)
