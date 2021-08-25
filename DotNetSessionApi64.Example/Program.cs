@@ -1,59 +1,82 @@
-﻿using System;
+﻿using MAT.AtlasSessionApi;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace MAT.AtlasSessionApi.TestApp
+namespace MAT.FileSessionApi.Example
 {
     internal static class Program
     {
         private static void Main()
         {
-            // The complete path for the session and associated session file names.
-            const string testSsnFileName = @"  \\mes-pwdata01\MESL\OCS\Data\Test Data\SsnFiles\64BitApiTestFiles\Race1_Germany_CH200_D1_153353.ssn   ";
-            string[] associatedSessionFileNames = { @"  Race1_Germany_CH200_D1_153353.VTS.002.ssv  ", @" Race1_Germany_CH200_D1_153353.Test.004.ssv  " };
 
+            const string menu = @"
+            #####################################################################################################
+            
+            Example code showing how to read-write ATLAS session files (Verify settings in Main() before executing)
+
+            Option 1 - Create a new session file with bespoke parameters
+            Option 2 - Read all parameters from an existing session file (with optional associated sessions)
+            Option 3 - Read selected parameters from an existing session file (with optional associated sessions)
+            Option 4 - Create a new session file with bespoke parameters and then read it
+            
+            #####################################################################################################";
+
+            // ################ Settings for Options 1 & 4 ################
+
+            // The complete path for the session
+            const string fullPathToNewSsn = @"C:\temp\dummy.ssn";
+            
+            // ################ Settings for Options 2 & 3 ################
+
+            // Full file path to the SSN to read
+            const string fullPathToExistingSsn = @"m:\SessionBrowser\SSN\VTS - Copy\Event Compare 180503163009.ssn";
+            // File names for any associated sessions
+            string[] associatedSessionFileNames =
+            {
+                "Event Compare 180503163009.VTS.001.ssv",
+                "Event Compare 180503163009.VTS.002.ssv",
+                "Event Compare 180503163009.VTS.003.ssv",
+                "Event Compare 180503163009.VTS.004.ssv",
+                "Event Compare 180503163009.VTS.005.ssv",
+                "Event Compare 180503163009.VTS.006.ssv"
+            };
+
+
+            
             // Let the use enter an option.
-            Console.WriteLine("Please enter the option for session Write(1), Read(2), Write-Read(3), ReadAllParameters(Y/N)");
+            Console.SetWindowSize(200, 60);
+            Console.WriteLine(menu);
 
             // Read in the user option.
+            Console.WriteLine();
+            Console.WriteLine("Please enter a number to select one of the above options:");
             var option = Console.ReadLine();
             var optionNumber = 0;
-            var readAllParameters = false;
             if (option != null)
-            {
-                char[] separator = { ',', ';', ' ' };
-                string[] options = option.Split(separator);
-
-                if (options.Length > 0)
-                    int.TryParse(options[0], out optionNumber);
-
-                if (options.Length > 1)
-                {
-                    char readAllParam;
-                    char.TryParse(options[options.Length - 1], out readAllParam);
-                    if (readAllParam == 'y' || readAllParam == 'Y')
-                    {
-                        readAllParameters = true;
-                    }
-                }
+            { 
+                int.TryParse(option, out optionNumber);
             }
 
             // process the option
             switch (optionNumber)
             {
                 case 1:
-                    CreateNewSession(testSsnFileName, false);
+                    CreateNewSession(fullPathToNewSsn, false);
                     break;
                 case 2:
-                    ReadExistingSession(testSsnFileName, false, associatedSessionFileNames, readAllParameters);
+                    ReadExistingSession(fullPathToExistingSsn, false, associatedSessionFileNames, true);
                     break;
                 case 3:
-                    CreateNewSession(testSsnFileName, false);
-                    ReadExistingSession(testSsnFileName);
+                    ReadExistingSession(fullPathToExistingSsn, false, associatedSessionFileNames, false);
+                    break;
+                case 4:
+                    CreateNewSession(fullPathToNewSsn, false);
+                    ReadExistingSession(fullPathToNewSsn);
                     break;
                 default:
-                    Console.WriteLine("Entered option was not correct {0}, exiting aplication.", option);
+                    Console.WriteLine("Entered option was not correct {0}, exiting application.", option);
                     break;
             }
 
@@ -70,9 +93,8 @@ namespace MAT.AtlasSessionApi.TestApp
                 const long sessionEndTime = 33000000000000L; // the time at which the recording ends 09:10:0.000
                 const long sessionLapInterval = 60000000000L; // time interval for lap generation 00:01:0.000
                 const int sessionParameterCount = 10; // the number of session parameters we will create
-                const long sessionSampleInterval = 100000000L; // time interval for each sample 100 msec.
-                const double parameterValueMultiplier = 100.0;
-                // multiplier used to create max (and min) range of the example parameters
+                const long sessionSampleInterval = 100000000L; // time interval for each sample 100ms.
+                const double parameterValueMultiplier = 100.0; // multiplier used to create max (and min) range of the example parameters
 
                 // create a new instance of the file session writer
                 using (ISessionWriter sessionWriter = new FileSessionWriter(testFileNameSsn))
@@ -80,8 +102,7 @@ namespace MAT.AtlasSessionApi.TestApp
                     // add some Session Details
                     sessionWriter.AddSessionDetails("Driver", "A. Person");
                     sessionWriter.AddSessionDetails("Car", "F1 MP V12");
-                    sessionWriter.AddSessionDetails("ECU Version",
-                        "T310Bios B122, chassis C142, engine E144, KcuBios B20F, eKERS 9332, Cbt610 6111, fiaapp F134");
+                    sessionWriter.AddSessionDetails("ECU Version", "T310Bios B122, chassis C142, engine E144, KcuBios B20F, eKERS 9332, Cbt610 6111, fiaapp F134");
                     sessionWriter.AddSessionDetails("Unit Data Source", "DataLab/Burst");
 
                     // create the parameter groups and associated sub groups
@@ -99,12 +120,12 @@ namespace MAT.AtlasSessionApi.TestApp
                     for (uint parameterIndex = 0; parameterIndex < sessionParameterCount; parameterIndex++)
                     {
                         // create the parameter name and description
-                        string name = string.Format("Parameter{0}", parameterIndex + 1);
-                        string description = string.Format("Test Parameter {0}", parameterIndex + 1);
+                        string name = $"Parameter{parameterIndex + 1}";
+                        string description = $"Test Parameter {parameterIndex + 1}";
 
                         if (parameterIndex < 5)
                         {
-                            string parameterUnit = string.Format(" U{0}", parameterIndex + 1);
+                            string parameterUnit = $"U{parameterIndex + 1}";
                             var physicalRange = new Range(-100, 100.0);
                             sessionWriter.BuildRationalParameter(parameterGroup, name, physicalRange)
                                 .Description(description)
@@ -128,8 +149,7 @@ namespace MAT.AtlasSessionApi.TestApp
                             }
                             else
                             {
-                                TextParameterBuilder textParameter = sessionWriter.BuildTextParameter(parameterGroup,
-                                    name);
+                                TextParameterBuilder textParameter = sessionWriter.BuildTextParameter(parameterGroup, name);
                                 textParameter.AddLookup(1.0, "One")
                                     .AddLookup(2.0, "Two")
                                     .AddLookup(3.0, "Three")
@@ -140,8 +160,7 @@ namespace MAT.AtlasSessionApi.TestApp
                                 textParameter.PhysicalRange(new Range(1, 4));
 
                                 textParameter.SubGroups(parameterSubGroups).Description(description);
-                                textParameter.OnPeriodicChannel(Frequency.Interval(sessionSampleInterval),
-                                    DataType.Signed8Bit).AddToSession();
+                                textParameter.OnPeriodicChannel(Frequency.Interval(sessionSampleInterval), DataType.Signed8Bit).AddToSession();
                             }
                         }
                     }
@@ -256,9 +275,6 @@ namespace MAT.AtlasSessionApi.TestApp
         {
             try
             {
-                // set the console size
-                Console.SetWindowSize(170, 60);
-
                 ISessionReader sessionReader;
 
                 if (loadLatestVersionOfAssociatedSessions)
@@ -429,21 +445,7 @@ namespace MAT.AtlasSessionApi.TestApp
                         }
 
                         // get the non interpolated sample data for each parameter for the whole session
-                        Console.WriteLine(Environment.NewLine + "Session Data Samples - Non Interpolated" +
-                                          Environment.NewLine);
-                        foreach (var parameter in sessionReader.Parameters)
-                        {
-                            // get the sample data for the whole session, we do not want interpolated results
-                            DataPoint[] buffer = sessionReader.GetSamples(parameter.Identifier, sessionReader.StartTime, sessionReader.EndTime);
-
-                            Console.WriteLine("  Parameter: \t\t{0}", parameter.Identifier);
-                            Console.WriteLine("    Sample Count: \t{0}", buffer.Length);
-
-                            Console.WriteLine(Environment.NewLine);
-                        }
-
-                        // get the interpolated sample data for each parameter
-                        Console.WriteLine(Environment.NewLine + "Session Data Samples - Interpolated" + Environment.NewLine);
+                        Console.WriteLine(Environment.NewLine + "Session Data Samples - Non Interpolated" + Environment.NewLine);
                         foreach (var parameter in sessionReader.Parameters)
                         {
                             // get the sample data for the whole session, we do want interpolated results.

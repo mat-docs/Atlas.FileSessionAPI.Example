@@ -56,13 +56,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MAT.AtlasSessionApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\DotNet64BitApi.9.81.21229.3\lib\MAT.AtlasSessionApi.dll</HintPath>
-    </Reference>
-    <Reference Include="MAT.LoadSessionFile.Interop, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\DotNet64BitApi.9.81.21229.3\lib\MAT.LoadSessionFile.Interop.dll</HintPath>
-    </Reference>
-    <Reference Include="MAT.OCS.ATLAS.Recording.Interop, Version=1.0.7899.25290, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\DotNet64BitApi.9.81.21229.3\lib\MAT.OCS.ATLAS.Recording.Interop.dll</HintPath>
+      <HintPath>..\packages\Atlas.FileSessionAPI.9.82.2.1\lib\MAT.AtlasSessionApi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

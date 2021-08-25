@@ -30,7 +30,7 @@ jobs:
         shell: pwsh
         run: |
           nuget sources Add -Name "McLaren Applied GitHub Packages" -Source https://nuget.pkg.github.com/mat-docs/index.json -UserName $env:PackagesUserName -Password $env:PackagesPatToken
-          $Uri = "https://api.github.com/orgs/mat-docs/packages/nuget/DotNet64BitApi/versions"
+          $Uri = "https://api.github.com/orgs/mat-docs/packages/nuget/Atlas.FileSessionAPI/versions"
           $Headers = @{Authorization = "Basic " + [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes("$env:PackagesUserName:$env:PackagesPatToken")) }
           $Method = "GET"
           $packageVersions = Invoke-RestMethod -Uri $Uri -Headers $Headers -Method $Method
