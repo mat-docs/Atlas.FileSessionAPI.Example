@@ -56,7 +56,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MAT.AtlasSessionApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\Atlas.FileSessionAPI.9.82.2.1\lib\MAT.AtlasSessionApi.dll</HintPath>
+      <HintPath>..\packages\Atlas.FileSessionAPI.9.82.2.10\lib\MAT.AtlasSessionApi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
