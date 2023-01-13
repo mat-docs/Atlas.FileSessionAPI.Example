@@ -46,7 +46,6 @@ namespace MAT.FileSessionApi.Example
 
             
             // Let the use enter an option.
-            Console.SetWindowSize(200, 60);
             Console.WriteLine(menu);
 
             // Read in the user option.
@@ -488,7 +487,6 @@ namespace MAT.FileSessionApi.Example
                                 // Calculate expected number of samples between start and end time at the given frequency.
                                 long sampleInterval = Frequency.Hz(1000.0).Interval();
                                 long expectedSamples = (long)Math.Floor((sessionReader.EndTime - sessionReader.StartTime) / (double)sampleInterval) + 1;
-                                Debug.Assert(channelBuffer.Length != expectedSamples);
 
                                 if (channelBuffer.Length != expectedSamples)
                                 {
