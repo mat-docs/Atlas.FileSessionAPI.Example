@@ -56,7 +56,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="MAT.AtlasSessionApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <HintPath>..\packages\Atlas.FileSessionAPI.9.82.2.10\lib\MAT.AtlasSessionApi.dll</HintPath>
+      <HintPath>..\packages\Atlas.FileSessionAPI.9.84.1.1\lib\net48\MAT.AtlasSessionApi.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -85,5 +85,7 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Baseclass.Contrib.Nuget.Output.2.4.3\build\Baseclass.Contrib.Nuget.Output.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Baseclass.Contrib.Nuget.Output.2.4.3\build\Baseclass.Contrib.Nuget.Output.targets'))" />
+    <Error Condition="!Exists('..\packages\Atlas.FileSessionAPI.9.84.1.1\build\net48\ATLAS.FileSessionAPI.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Atlas.FileSessionAPI.9.84.1.1\build\net48\ATLAS.FileSessionAPI.targets'))" />
   </Target>
+  <Import Project="..\packages\Atlas.FileSessionAPI.9.84.1.1\build\net48\ATLAS.FileSessionAPI.targets" Condition="Exists('..\packages\Atlas.FileSessionAPI.9.84.1.1\build\net48\ATLAS.FileSessionAPI.targets')" />
 </Project>
