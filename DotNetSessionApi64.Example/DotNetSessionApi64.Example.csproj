@@ -22,7 +22,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Atlas.FileSessionAPI" Version="9.84.1.21" />
-    <PackageReference Include="Baseclass.Contrib.Nuget.Output" Version="2.4.3" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
   </ItemGroup>
